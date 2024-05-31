@@ -42,7 +42,7 @@ module.exports.getPrices = async function (foodName, page) {
     const weightText = weightElement ? weightElement.innerText : null;
 
     const noStock = Boolean(n.querySelector('input[disabled]'));
-    if (noStock) return {weightText, unitPrice: 'No stock'};
+    if (noStock) return {weightText, rowPrices: {noStock: 'No stock'}};
 
     const priceContainer = Array.from(n.querySelectorAll('li'));
     let rowPrices = {}
