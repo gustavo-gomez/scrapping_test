@@ -7,7 +7,7 @@ const hillsFoodName = 'Hills Sd Puppy Small Bites Cachorros Y Razas Pequeñas Al
 
 (async () => {
   let browser;
-  if (process.env.NODE_ENV === 'production')
+  if (process.env.ENV === 'production')
     browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
   else
     browser = await puppeteer.launch();

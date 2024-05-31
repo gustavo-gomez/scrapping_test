@@ -8,8 +8,8 @@ const grainFreeChicken = 'True Origins Pure Cat Adult Stererilized Chicken Grain
 
 (async () => {
   let browser;
-  console.log(process.env.NODE_ENV);
-  if (process.env.NODE_ENV === 'production')
+  console.log(process.env.ENV);
+  if (process.env.ENV === 'production')
     browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
   else
     browser = await puppeteer.launch();
