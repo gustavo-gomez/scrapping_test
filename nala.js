@@ -7,7 +7,7 @@ const grainFreeSalmon = 'True Origins Pure Cat Adult Sterilized Salmon Grain fre
 const grainFreeChicken = 'True Origins Pure Cat Adult Stererilized Chicken Grain free';
 
 (async () => {
-  const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
+  const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
   const page = await browser.newPage();
 
   await page.goto(trueOriginsPageURL);
