@@ -2,7 +2,7 @@ const sgMail = require("@sendgrid/mail");
 
 module.exports.sendEmail = async function (foodPets) {
   const msg = {
-    to: process.env.EMAIL_TO,
+    to: process.env.EMAIL_TO.split(','),
     from: process.env.EMAIL_FROM,
     templateId: process.env.EMAIL_TEMPLATE_ID,
     dynamicTemplateData: {foodPets},
