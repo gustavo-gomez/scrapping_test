@@ -16,31 +16,16 @@ const grainFreeChicken = 'True Origins Pure Cat Adult Stererilized Chicken Grain
   await page.waitForSelector(searchResultSelector);
 
   const grainFreeSalmonPrices = await getPrices(grainFreeSalmon, page);
-  console.log(grainFreeSalmon);
-  console.log('Promocion: ', grainFreeSalmonPrices?.promotionText);
-  grainFreeSalmonPrices.prices.forEach((element, index) => {
-    console.log('Peso: ', element.weightText);
-    console.log(element.unitPrice);
-    console.log('');
-  });
-  // console.log('');
-  // await page.goBack();
-  // console.log('**************************************************\n');
-  // await page.waitForSelector(searchResultSelector);
-  //
-  // const grainFreeChickenPrices = await getPrices(grainFreeChicken, page);
-  // console.log(grainFreeChicken);
-  // console.log('Promocion: ', grainFreeChickenPrices.promotionText);
-  // grainFreeChickenPrices.prices.forEach((element, index) => {
-  //   console.log('Peso: ', element.weightText);
-  //   console.log(element.unitPrice);
-  //   console.log('');
-  // });
+
+
+  await page.goBack();
+  await page.waitForSelector(searchResultSelector);
+
+  const grainFreeChickenPrices = await getPrices(grainFreeChicken, page);
 
   const msg = {
     to: 'gomezf09@gmail.com',
     from: 'contacto@gustavogomez.dev',
-    // subject: 'Sending with SendGrid is Fun',
     templateId: 'd-f907a9a7cc3b4360b146a19378505f41',
     dynamicTemplateData: {
       foodPets: [
@@ -50,15 +35,14 @@ const grainFreeChicken = 'True Origins Pure Cat Adult Stererilized Chicken Grain
           url: grainFreeSalmonPrices.url,
           foods: grainFreeSalmonPrices.prices
         },
-        // {
-        //   foodName: grainFreeChicken,
-        //   promotionText: grainFreeChickenPrices.promotionText,
-        //   url: grainFreeChickenPrices.url,
-        //   foods: grainFreeChickenPrices.prices
-        // }
+        {
+          foodName: grainFreeChicken,
+          promotionText: grainFreeChickenPrices.promotionText,
+          url: grainFreeChickenPrices.url,
+          foods: grainFreeChickenPrices.prices
+        }
       ]
     },
-
   }
   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
   console.log('sent email');

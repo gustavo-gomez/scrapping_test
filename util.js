@@ -45,16 +45,17 @@ module.exports.getPrices = async function (foodName, page) {
     if (noStock) return {weightText, unitPrice: 'No stock'};
 
     const priceContainer = Array.from(n.querySelectorAll('li'));
-    const priceRow = priceContainer.map(li => {
+    let rowPrices = {}
+    priceContainer.forEach(li => {
       if (li.classList.contains('strike-through')) {
-        return 'Original: ' + li.innerText;
+        rowPrices.original=  li.innerText;
       } else if (li.classList.contains('sales')) {
-        return 'Precio: ' + li.innerText;
+        rowPrices.price= li.innerText;
       } else {
-        return li.innerText;
+        rowPrices.text = li.innerText;
       }
     });
-    return {weightText, unitPrice: priceRow.join("\n")};
+    return {weightText, rowPrices};
   }));
   return {url, promotionText, prices};
 }
