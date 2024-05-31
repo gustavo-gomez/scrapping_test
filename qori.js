@@ -6,7 +6,9 @@ const hillsURL = 'https://www.superpet.pe/perro/alimentos-y-snacks/alimento-seco
 const hillsFoodName= 'Hills Sd Puppy Small Bites Cachorros Y Razas Pequeñas Alimento Seco Perro';
 
 (async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    executablePath: '/usr/bin/chromium-browser'
+  });
 
   const page = await browser.newPage();
   await page.goto(hillsURL);
