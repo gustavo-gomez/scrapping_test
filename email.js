@@ -5,7 +5,7 @@ module.exports.sendEmail = async function (foodPets) {
     to: process.env.EMAIL_TO.split(','),
     from: process.env.EMAIL_FROM,
     templateId: process.env.EMAIL_TEMPLATE_ID,
-    dynamicTemplateData: {foodPets},
+    dynamicTemplateData: foodPets,
   }
   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 

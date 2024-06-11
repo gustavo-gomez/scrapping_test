@@ -28,19 +28,22 @@ const grainFreeChicken = 'True Origins Pure Cat Adult Stererilized Chicken Grain
 
   const grainFreeChickenPrices = await getPrices(grainFreeChicken, page);
 
-  await sendEmail([
-    {
-      foodName: grainFreeSalmon,
-      promotionText: grainFreeSalmonPrices.promotionText,
-      url: grainFreeSalmonPrices.url,
-      foods: grainFreeSalmonPrices.prices
-    },
-    {
-      foodName: grainFreeChicken,
-      promotionText: grainFreeChickenPrices.promotionText,
-      url: grainFreeChickenPrices.url,
-      foods: grainFreeChickenPrices.prices
-    }
-  ])
+  await sendEmail({
+    foodPets: [
+      {
+        foodName: grainFreeSalmon,
+        promotionText: grainFreeSalmonPrices.promotionText,
+        url: grainFreeSalmonPrices.url,
+        foods: grainFreeSalmonPrices.prices
+      },
+      {
+        foodName: grainFreeChicken,
+        promotionText: grainFreeChickenPrices.promotionText,
+        url: grainFreeChickenPrices.url,
+        foods: grainFreeChickenPrices.prices
+      }
+    ],
+    subject: 'Precios - superpet - Nala'
+  })
   process.exit(0);
 })();

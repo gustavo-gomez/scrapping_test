@@ -20,13 +20,16 @@ const hillsFoodName = 'Hills Sd Puppy Small Bites Cachorros Y Razas Pequeñas Al
   await page.waitForSelector(searchResultSelector);
   const hillsPrices = await getPrices(hillsFoodName, page);
 
-  await sendEmail([
-    {
-      foodName: hillsFoodName,
-      promotionText: hillsPrices.promotionText,
-      url: hillsPrices.url,
-      foods: hillsPrices.prices
-    }
-  ])
+  await sendEmail({
+    foodPets: [
+      {
+        foodName: hillsFoodName,
+        promotionText: hillsPrices.promotionText,
+        url: hillsPrices.url,
+        foods: hillsPrices.prices
+      }
+    ],
+    subject: 'Precios - superpet - Qori'
+  })
   process.exit(0);
 })();
