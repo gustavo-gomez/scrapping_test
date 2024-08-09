@@ -1,4 +1,4 @@
-name: Qori
+name: Nala
 on:
   workflow_dispatch:
 
