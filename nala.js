@@ -6,9 +6,11 @@ const trueOriginsPageURL = 'https://www.superpet.pe/gato/alimentos-y-snacks/alim
 const grainFreeSalmon = 'True Origins Pure Cat Adult Sterilized Salmon Grain free';
 const grainFreeChicken = 'True Origins Pure Cat Adult Stererilized Chicken Grain free';
 
+const foodsToSearch = [grainFreeSalmon, grainFreeChicken];
+
 (async () => {
   let browser;
-  console.log(process.env.ENV);
+
   if (process.env.ENV === 'production')
     browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
   else
@@ -20,29 +22,30 @@ const grainFreeChicken = 'True Origins Pure Cat Adult Stererilized Chicken Grain
   const searchResultSelector = '.product .text-base';
   await page.waitForSelector(searchResultSelector);
 
-  const grainFreeSalmonPrices = await getPrices(grainFreeSalmon, page);
+  //start
+  let emailInformation = []
+  let previousHasData = false;
+  for (const foodName of foodsToSearch) {
+    if (previousHasData) {
+      await page.goBack();
+      await page.waitForSelector(searchResultSelector);
+    }
+    const foodInformation = await getPrices(foodName, page);
+    previousHasData = foodInformation?.url;
 
-
-  await page.goBack();
-  await page.waitForSelector(searchResultSelector);
-
-  const grainFreeChickenPrices = await getPrices(grainFreeChicken, page);
+    previousHasData ? emailInformation.push({
+      foodName,
+      promotionText: foodInformation.promotionText,
+      url: foodInformation.url,
+      foods: foodInformation.prices
+    }) :  emailInformation.push({
+      foodName,
+      promotionText: "No se encontraron precios",
+    })
+  }
 
   await sendEmail({
-    foodPets: [
-      {
-        foodName: grainFreeSalmon,
-        promotionText: grainFreeSalmonPrices.promotionText,
-        url: grainFreeSalmonPrices.url,
-        foods: grainFreeSalmonPrices.prices
-      },
-      {
-        foodName: grainFreeChicken,
-        promotionText: grainFreeChickenPrices.promotionText,
-        url: grainFreeChickenPrices.url,
-        foods: grainFreeChickenPrices.prices
-      }
-    ],
+    foodPets: emailInformation,
     subject: 'Precios - superpet - Nala'
   })
   process.exit(0);

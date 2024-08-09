@@ -5,7 +5,7 @@ function delay(time) {
 }
 
 async function clickOnFood(elementText, page) {
-  await page.evaluate((elementText) => {
+  const elementExists = await page.evaluate((elementText) => {
     const textBaseElements = Array.from(document.querySelectorAll('.text-base'));
     for (let element of textBaseElements) {
       if (element.innerText === elementText) {
@@ -13,17 +13,41 @@ async function clickOnFood(elementText, page) {
         if (productElement) {
           const linkElement = productElement.querySelector('a.link');
           if (linkElement) {
-            linkElement.click();
-            return;
+            return true;
           }
         }
       }
     }
+    return false;
   }, elementText);
+
+  if (elementExists) {
+    await page.evaluate((elementText) => {
+      const textBaseElements = Array.from(document.querySelectorAll('.text-base'));
+      for (let element of textBaseElements) {
+        if (element.innerText === elementText) {
+          const productElement = element.closest('.product');
+          if (productElement) {
+            const linkElement = productElement.querySelector('a.link');
+            if (linkElement) {
+              linkElement.click();
+              return;
+            }
+          }
+        }
+      }
+    }, elementText);
+    return true
+  } else {
+    return false
+  }
 }
 
 module.exports.getPrices = async function (foodName, page) {
-  await clickOnFood(foodName, page);
+  const ableToClick = await clickOnFood(foodName, page);
+
+  if (!ableToClick) return {url: null, promotionText: null, prices: []};
+
   await page.waitForNavigation();
   const url = page.url();
 
@@ -48,9 +72,9 @@ module.exports.getPrices = async function (foodName, page) {
     let rowPrices = {}
     priceContainer.forEach(li => {
       if (li.classList.contains('strike-through')) {
-        rowPrices.original=  li.innerText;
+        rowPrices.original = li.innerText;
       } else if (li.classList.contains('sales')) {
-        rowPrices.price= li.innerText;
+        rowPrices.price = li.innerText;
       } else {
         rowPrices.text = li.innerText;
       }
