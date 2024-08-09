@@ -27,5 +27,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: source ./sendgrid.env
-    - run: node qori.js
+    - name: Execute code
+      run: node qori.js
+      env:
+        SENDGRID_API_KEY: ${{secrets.SENDGRID_API_KEY}}
+        EMAIL_TO: ${{secrets.EMAIL_TO}}
+        EMAIL_FROM: ${{secrets.EMAIL_FROM}}
+        EMAIL_TEMPLATE_ID: ${{secrets.EMAIL_TEMPLATE_ID}}
+        ENV: ${{secrets.ENV}}
+    
