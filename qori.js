@@ -2,8 +2,11 @@ const puppeteer = require("puppeteer");
 const {getPrices} = require('./util.js');
 const {sendEmail} = require('./email.js');
 
-const hillsURL = 'https://www.superpet.pe/perro/alimentos-y-snacks/alimento-seco?cgid=alimentos-seco-perro&prefn1=ML_Raza&prefv1=Razas%20peque%c3%b1as&prefn2=brand&prefv2=Hills';
+const hillsURL = 'https://www.superpet.pe/perro/alimentos-y-snacks/alimento-seco?cgid=alimentos-seco-perro&prefn1=ML_Edad&prefv1=Cachorro&prefn2=brand&prefv2=Hills';
 const hillsFoodName = 'Hills Sd Puppy Small Bites Cachorros Y Razas Pequeñas Alimento Seco Perro';
+const hillsRazaMediana = 'Hills Sd Puppy H. Development Cachorros Razas Medianas Alimento Seco Perro';
+
+const foodsToSearch = [hillsFoodName, hillsRazaMediana];
 
 (async () => {
   let browser;
@@ -18,17 +21,29 @@ const hillsFoodName = 'Hills Sd Puppy Small Bites Cachorros Y Razas Pequeñas Al
   const searchResultSelector = '.product .text-base';
 
   await page.waitForSelector(searchResultSelector);
-  const hillsPrices = await getPrices(hillsFoodName, page);
+  let emailInformation = []
+  let previousHasData = false;
+  for (const foodName of foodsToSearch) {
+    if (previousHasData) {
+      await page.goBack();
+      await page.waitForSelector(searchResultSelector);
+    }
+    const foodInformation = await getPrices(foodName, page);
+    previousHasData = foodInformation?.url;
+
+    previousHasData ? emailInformation.push({
+      foodName,
+      promotionText: foodInformation.promotionText,
+      url: foodInformation.url,
+      foods: foodInformation.prices
+    }) :  emailInformation.push({
+      foodName,
+      promotionText: "No se encontraron precios",
+    })
+  }
 
   await sendEmail({
-    foodPets: [
-      {
-        foodName: hillsFoodName,
-        promotionText: hillsPrices.promotionText,
-        url: hillsPrices.url,
-        foods: hillsPrices.prices
-      }
-    ],
+    foodPets: emailInformation,
     subject: 'Precios - superpet - Qori'
   })
   process.exit(0);
