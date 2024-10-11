@@ -8,7 +8,7 @@ async function clickOnFood(elementText, page) {
   const elementExists = await page.evaluate((elementText) => {
     const textBaseElements = Array.from(document.querySelectorAll('.text-base'));
     for (let element of textBaseElements) {
-      if (element.innerText === elementText) {
+      if (element.innerText.trim() === elementText.trim()) {
         const productElement = element.closest('.product');
         if (productElement) {
           const linkElement = productElement.querySelector('a.link');
@@ -25,7 +25,7 @@ async function clickOnFood(elementText, page) {
     await page.evaluate((elementText) => {
       const textBaseElements = Array.from(document.querySelectorAll('.text-base'));
       for (let element of textBaseElements) {
-        if (element.innerText === elementText) {
+        if (element.innerText.trim() === elementText.trim()) {
           const productElement = element.closest('.product');
           if (productElement) {
             const linkElement = productElement.querySelector('a.link');

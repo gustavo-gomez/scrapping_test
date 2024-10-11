@@ -2,11 +2,10 @@ const puppeteer = require("puppeteer");
 const {getPrices} = require('./util.js');
 const {sendEmail} = require('./email.js');
 
-const hillsURL = 'https://www.superpet.pe/perro/alimentos-y-snacks/alimento-seco?cgid=alimentos-seco-perro&prefn1=ML_Edad&prefv1=Cachorro&prefn2=brand&prefv2=Hills';
-const hillsFoodName = 'Hills Sd Puppy Small Bites Cachorros Y Razas Pequeñas Alimento Seco Perro';
-const hillsRazaMediana = 'Hills Sd Puppy H. Development Cachorros Razas Medianas Alimento Seco Perro';
+const hillsURL = 'https://www.superpet.pe/perro/alimentos-y-snacks/alimento-seco?cgid=alimentos-seco-perro&prefn1=brand&prefv1=Canbo';
+const hillsFoodName = 'Canbo Cachorro Cordero razas med/gran';
 
-const foodsToSearch = [hillsFoodName, hillsRazaMediana];
+const foodsToSearch = [hillsFoodName];
 
 (async () => {
   let browser;
@@ -36,7 +35,7 @@ const foodsToSearch = [hillsFoodName, hillsRazaMediana];
       promotionText: foodInformation.promotionText,
       url: foodInformation.url,
       foods: foodInformation.prices
-    }) :  emailInformation.push({
+    }) : emailInformation.push({
       foodName,
       promotionText: "No se encontraron precios",
     })
