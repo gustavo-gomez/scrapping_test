@@ -13,14 +13,13 @@ const arena2 = 'Arena Para Gato Origens Super Premium 100% Natural Sin Aroma '
 const pages = [
   {
     url: trueOriginsPageURL,
-    foodsToSearch: [grainFreeSalmon, grainFreeChicken]
+    itemsToSearch: [grainFreeSalmon, grainFreeChicken]
   },
   {
     url: arenaURL,
-    foodsToSearch: [arena1, arena2]
+    itemsToSearch: [arena1, arena2]
   }
-]
-const foodsToSearch = [grainFreeSalmon, grainFreeChicken];
+];
 
 (async () => {
   let browser;
@@ -38,21 +37,21 @@ const foodsToSearch = [grainFreeSalmon, grainFreeChicken];
       const searchResultSelector = '.product .text-base';
       await page.waitForSelector(searchResultSelector);
       let previousHasData = false;
-      for (const foodName of item.foodsToSearch) {
+      for (const itemToSearch of item.itemsToSearch) {
         if (previousHasData) {
           await page.goBack();
           await page.waitForSelector(searchResultSelector);
         }
-        const foodInformation = await getPrices(foodName, page);
+        const foodInformation = await getPrices(itemToSearch, page);
         previousHasData = foodInformation?.url;
 
         previousHasData ? emailInformation.push({
-          foodName,
+          foodName: itemToSearch,
           promotionText: foodInformation.promotionText,
           url: foodInformation.url,
           foods: foodInformation.prices
         }) : emailInformation.push({
-          foodName,
+          foodName: itemToSearch,
           promotionText: "No se encontraron precios",
         })
       }
