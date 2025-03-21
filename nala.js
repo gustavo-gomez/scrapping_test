@@ -10,6 +10,11 @@ const arenaURL = 'https://www.superpet.pe/gato/salud-e-higiene/arena?cgid=Salud-
 const arena1 = 'Arena Para Gato Origens Super Premium 100% Natural Con Eucalipto '
 const arena2 = 'Arena Para Gato Origens Super Premium 100% Natural Sin Aroma '
 
+
+const braveryURL='https://www.superpet.pe/gato/alimentos-y-snacks/alimento-seco?cgid=alimentos-seco-gato&prefn1=ML_Cuidado-especificos&prefv1=Castrado%20%2f%20Esterilizado&prefn2=ML_Edad&prefv2=Adulto&prefn3=ML_Mascota&prefv3=Gato&prefn4=ML_Nutricion&prefv4=Libre%20de%20granos&prefn5=brand&prefv5=Bravery'
+const bravery1 = 'Bravery Chicken Adult Cat Sterilized Alimento Seco Gato'
+const bravery2 = 'Bravery Salmón Adult Cat Sterilized Alimento Seco Gato'
+
 const pages = [
   {
     url: trueOriginsPageURL,
@@ -18,6 +23,10 @@ const pages = [
   {
     url: arenaURL,
     itemsToSearch: [arena1, arena2]
+  },
+  {
+    url: braveryURL,
+    itemsToSearch: [bravery1, bravery2]
   }
 ];
 
